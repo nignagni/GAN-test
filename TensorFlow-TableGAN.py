@@ -16,6 +16,11 @@ import matplotlib.pyplot as plt
 from IPython.display import clear_output
 from random import randrange
 import tabletomemory
+import random
+import pandas as pd
+import numpy as np
+import io
+from PIL import Image
 
 words = tabletomemory.random_word_dic()
 
@@ -33,11 +38,11 @@ def generate(words):
     testframe = pd.DataFrame()
     numberframe = pd.DataFrame()
     
-    for const in random.sample(words, columns):
-        row = random.sample(words,rows)
-        ind_row = [words.index(s) for s in row]
+    for const in random.sample(words.dic, columns):
+        row = random.sample(words.dic,rows)
+        ind_row = [words.dic.index(s) for s in row]
         testframe[const] = row
-        numberframe[words.index(const)] = ind_row
+        numberframe[words.dic.index(const)] = ind_row
     
     #Generate the output numpy array w/ padding
     r,c = testframe.shape
@@ -54,9 +59,9 @@ def generate(words):
     b.savefig(buf,format='jpeg',pad_inches=0,bbox_inches = 'tight')
     buf.seek(0)
     
-    image = tf.io.read_file(b)
-    image = tf.image.decode_jpeg(image)
+    #image = tf.read_file(b)
+    #image = tf.image.decode_jpeg(b)
     
-    input_image = tf.cast(image, tf.float32)
+    input_image = Image.open(buf)
     
     return input_image, final_data
